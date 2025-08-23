@@ -32,9 +32,12 @@ RUN git clone --depth 1 --branch "${WAYPOINTS_REF}" \
     https://github.com/bhmoon713/fastbot_waypoints.git ./src/fastbot_waypoints
 
 # Resolve deps & build
-RUN source /opt/ros/humble/setup.bash \
- && rosdep install --rosdistro humble --from-paths src --ignore-src -r -y \
- && colcon build --symlink-install
+RUN apt-get update && \
+    source /opt/ros/humble/setup.bash && \
+    rosdep update && \
+    rosdep install --rosdistro humble --from-paths src --ignore-src -r -y && \
+    colcon build --symlink-install
+
 
 # Headless display defaults (if you need to run Gazebo in CI)
 ENV DISPLAY=:99
